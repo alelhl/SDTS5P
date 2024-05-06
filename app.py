@@ -17,20 +17,18 @@ st.write(fig_scatter2)
 st.header('Condition vs Year')
 condition_list = sorted(df['condition'].unique())
 year_list = sorted(df['model_year'].unique())
-Condition = st.selectbox(
+condition = st.selectbox(
     label='Select Condition Type',
     options=condition_list,
     index=condition_list.index('good')
 )
-year = st.selectbox(
-    label='Select Year',
-    options=year_list,
-    index=year_list.index('2020')
-)
+
+mask_filter = (df['condition'] == condition)
+df_filtered = df[mask_filter]
 normalize = st.checkbox('Normalize Histogram', value=True)
 if normalize:
     histnorm = 'percent'
 else:
     histnorm = None
-fig_hist1 = px.histogram(df, x='model_year', color="condition", nbins=75, histnorm=histnorm)
+fig_hist1 = px.histogram(df_filtered, x='model_year', color="condition", nbins=75, histnorm=histnorm)
 st.write(fig_hist1)
